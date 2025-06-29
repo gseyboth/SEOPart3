@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debt Snowball Calculator - Pay Off Debt Faster</title>
+  <meta name="description" content="Use this free debt snowball calculator to create a personalized plan to pay off your debt faster. Enter balances, interest rates, and monthly payments.">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .debt-entry {
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    input[type="number"], input[type="text"], input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+    }
+    #results {
+      margin-top: 30px;
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    details {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Debt Snowball Calculator</h1>
+  <p>Use our free <strong>Debt Snowball Calculator</strong> to build a step-by-step plan to pay off debt fast. Enter your debt details, and we’ll show you a custom payment plan using the snowball method—where you pay off the smallest balances first to build momentum.</p>
+
+  <label for="start-date"><strong>Start Date:</strong></label>
+  <input type="date" id="start-date" />
+
+  <div id="debt-list">
+    <div class="debt-entry">
+      <label>Debt Nickname:</label>
+      <input type="text" placeholder="e.g., Credit Card #1" class="nickname" />
+      <label>Balance ($):</label>
+      <input type="number" class="balance" />
+      <label>Interest Rate (%):</label>
+      <input type="number" class="rate" />
+      <label>Minimum Monthly Payment ($):</label>
+      <input type="number" class="min-payment" />
+    </div>
+  </div>
+
+  <button onclick="addDebt()">+ Add Another Debt</button>
+  <br /><br />
+
+  <label><strong>Extra Monthly Payment ($):</strong></label>
+  <input type="number" id="extra-payment" value="0" />
+
+  <br />
+  <button onclick="calculateSnowball()">Calculate Snowball Plan</button>
+
+  <div id="results"></div>
+
+  <details>
+    <summary><strong>What is the debt snowball method?</strong></summary>
+    <p>The debt snowball method involves paying off your debts from smallest to largest, regardless of interest rate. It builds motivation by creating early wins.</p>
+  </details>
+
+  <details>
+    <summary><strong>Is the snowball method better than avalanche?</strong></summary>
+    <p>The snowball method helps psychologically by knocking out debts faster. The avalanche saves more in interest. Choose what keeps you consistent.</p>
+  </details>
+
+  <script>
+    function addDebt() {
+      const container = document.createElement("div");
+      container.className = "debt-entry";
+      container.innerHTML = `
+        <label>Debt Nickname:</label>
+        <input type="text" placeholder="e.g., Personal Loan" class="nickname" />
+        <label>Balance ($):</label>
+        <input type="number" class="balance" />
+        <label>Interest Rate (%):</label>
+        <input type="number" class="rate" />
+        <label>Minimum Monthly Payment ($):</label>
+        <input type="number" class="min-payment" />
+      `;
+      document.getElementById("debt-list").appendChild(container);
+    }
+
+    function calculateSnowball() {
+      const debts = [];
+      document.querySelectorAll(".debt-entry").forEach(entry => {
+        const nickname = entry.querySelector(".nickname").value || "Unnamed";
+        const balance = parseFloat(entry.querySelector(".balance").value) || 0;
+        const rate = parseFloat(entry.querySelector(".rate").value) || 0;
+        const minPayment = parseFloat(entry.querySelector(".min-payment").value) || 0;
+        if (balance > 0) {
+          debts.push({ nickname, balance, rate, minPayment });
+        }
+      });
+
+      const extra = parseFloat(document.getElementById("extra-payment").value) || 0;
+      const startDate = new Date(document.getElementById("start-date").value || new Date());
+      debts.sort((a, b) => a.balance - b.balance);
+
+      let log = "<h2>Snowball Repayment Plan:</h2><ul>";
+      let month = 0;
+      while (debts.length > 0) {
+        let currentDebt = debts[0];
+        let payment = currentDebt.minPayment + extra;
+        let monthlyInterest = (currentDebt.rate / 100) / 12;
+        currentDebt.balance = currentDebt.balance * (1 + monthlyInterest) - payment;
+
+        if (currentDebt.balance <= 0) {
+          log += `<li><strong>${currentDebt.nickname}</strong> paid off in ${month + 1} month(s).</li>`;
+          debts.shift();
+          extra += currentDebt.minPayment;
+        }
+
+        month++;
+        if (month > 600) break; // prevent infinite loop
+      }
+      log += "</ul><p><strong>Total months to debt freedom:</strong> " + month + "</p>";
+      document.getElementById("results").innerHTML = log;
+    }
+  </script>
+
+  <footer style="text-align:center; margin-top: 40px; font-size: 0.9em;">
+    &copy; 2024 DIYMoneyTools.com — Free personal finance calculators for smarter money moves.
+  </footer>
+
+</body>
+</html>

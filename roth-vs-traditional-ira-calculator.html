@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roth vs Traditional IRA Calculator | DIYMoneyTools</title>
+  <meta name="description" content="Compare Roth IRA and Traditional IRA savings based on income, contributions, taxes, and retirement goals. Find out which strategy saves you more.">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+    }
+    #results {
+      margin-top: 25px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Roth vs Traditional IRA Calculator</h1>
+  <p>This tool helps you estimate your retirement savings for both Roth and Traditional IRAs based on your income, tax rate, and time horizon. Understand the difference and make smarter investment decisions.</p>
+
+  <label for="income">Annual Income ($):</label>
+  <input type="number" id="income" placeholder="e.g., 60000" />
+
+  <label for="contribution">Annual Contribution ($):</label>
+  <input type="number" id="contribution" placeholder="e.g., 6000" />
+
+  <label for="years">Years Until Retirement:</label>
+  <input type="number" id="years" placeholder="e.g., 30" />
+
+  <label for="growthRate">Expected Annual Growth Rate (%):</label>
+  <input type="number" id="growthRate" placeholder="e.g., 7" />
+
+  <label for="currentTax">Current Tax Rate (%):</label>
+  <input type="number" id="currentTax" placeholder="e.g., 22" />
+
+  <label for="retirementTax">Tax Rate at Retirement (%):</label>
+  <input type="number" id="retirementTax" placeholder="e.g., 15" />
+
+  <button onclick="calculate()">Compare</button>
+
+  <div id="results"></div>
+
+  <script>
+    function calculate() {
+      const income = parseFloat(document.getElementById('income').value);
+      const contribution = parseFloat(document.getElementById('contribution').value);
+      const years = parseFloat(document.getElementById('years').value);
+      const growthRate = parseFloat(document.getElementById('growthRate').value) / 100;
+      const currentTax = parseFloat(document.getElementById('currentTax').value) / 100;
+      const retirementTax = parseFloat(document.getElementById('retirementTax').value) / 100;
+
+      const futureValue = contribution * (((1 + growthRate) ** years - 1) / growthRate);
+
+      const rothAmount = futureValue;
+      const traditionalAmount = futureValue * (1 - retirementTax);
+      const rothAfterTax = contribution * (1 - currentTax);
+      const rothFV = rothAfterTax * (((1 + growthRate) ** years - 1) / growthRate);
+
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+
+      document.getElementById('results').innerHTML = `
+        <h3>Results</h3>
+        <p><strong>Roth IRA (after-tax contributions):</strong> ${formatter.format(rothFV)}</p>
+        <p><strong>Traditional IRA (tax-deferred):</strong> ${formatter.format(traditionalAmount)}</p>
+        <p style="margin-top:10px; font-style:italic;">This assumes you contribute the same dollar amount to both plans and invest consistently over time.</p>
+      `;
+    }
+  </script>
+</body>
+</html>

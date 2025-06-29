@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contractor Tax Estimator | DIY Money Tools</title>
+  <meta name="description" content="Estimate your contractor taxes including federal, self-employment, and state income taxes. Customize by state, filing status, and income. Built for freelancers, 1099 workers, and the self-employed.">
+  <meta name="keywords" content="contractor tax calculator, 1099 tax estimator, self-employed taxes, freelance tax calculator, net income estimator, state taxes, CA contractor tax">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f9f9f9; }
+    h1 { color: #333; }
+    label, select, input { display: block; margin: 1rem 0 0.5rem; }
+    input, select { padding: 0.5rem; width: 100%; max-width: 400px; }
+    .tooltip { font-size: 0.9rem; color: #777; margin-top: -0.5rem; margin-bottom: 1rem; }
+    .result { background: #fff; padding: 1rem; border-radius: 8px; margin-top: 1.5rem; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .result p { margin: 0.5rem 0; }
+    footer { margin-top: 2rem; font-size: 0.9rem; color: #777; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <h1>Contractor Tax Estimator</h1>
+
+  <label>Annual Gross Income ($):
+    <input type="number" id="income" value="100000" />
+  </label>
+
+  <label>Select Your State:
+    <select id="state">
+      <option value="CA" selected>California</option>
+      <option value="NY">New York</option>
+      <option value="TX">Texas</option>
+      <option value="FL">Florida</option>
+      <option value="IL">Illinois</option>
+      <option value="Other">Other</option>
+    </select>
+    <div class="tooltip">Used for state income tax calculations</div>
+  </label>
+
+  <label>Filing Status:
+    <select id="filingStatus">
+      <option value="single">Single</option>
+      <option value="married">Married Filing Jointly</option>
+    </select>
+    <div class="tooltip">Affects standard deduction and federal tax bracket</div>
+  </label>
+
+  <label>
+    <input type="checkbox" id="caPenalty" checked />
+    Apply CA Health Insurance Penalty
+  </label>
+
+  <label>
+    <input type="checkbox" id="caLLCTax" />
+    Include CA LLC Franchise Tax
+  </label>
+
+  <button onclick="calculateTaxes()">Calculate Taxes</button>
+
+  <div class="result" id="output"></div>
+
+  <footer>
+    © 2025 DIY Money Tools. For estimation use only. Calculations may not reflect exact tax liabilities.
+  </footer>
+
+  <script>
+    function formatCurrency(value) {
+      return "$" + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function calculateTaxes() {
+      const income = parseFloat(document.getElementById('income').value);
+      const state = document.getElementById('state').value;
+      const filingStatus = document.getElementById('filingStatus').value;
+      const applyCaPenalty = document.getElementById('caPenalty').checked;
+      const applyLLCTax = document.getElementById('caLLCTax').checked;
+
+      const stdDeduction = filingStatus === 'single' ? 14600 : 29200;
+      const taxableIncome = Math.max(income - stdDeduction, 0);
+
+      let federalTax = 0;
+      const brackets = filingStatus === 'single'
+        ? [[11000, 0.10], [44725, 0.12], [95375, 0.22], [182100, 0.24]]
+        : [[22000, 0.10], [89450, 0.12], [190750, 0.22], [364200, 0.24]];
+
+      let remaining = taxableIncome;
+      let lastCap = 0;
+      for (let [cap, rate] of brackets) {
+        const bracketAmount = Math.min(cap - lastCap, remaining);
+        if (bracketAmount <= 0) break;
+        federalTax += bracketAmount * rate;
+        remaining -= bracketAmount;
+        lastCap = cap;
+      }
+
+      const selfEmploymentTax = income * 0.153;
+      let stateTax = 0;
+
+      if (state === 'CA') stateTax = taxableIncome * 0.09;
+      else if (state === 'NY') stateTax = taxableIncome * 0.062;
+      else if (state === 'IL') stateTax = taxableIncome * 0.0495;
+      else if (state === 'FL' || state === 'TX') stateTax = 0;
+      else stateTax = taxableIncome * 0.05;
+
+      let caPenalty = (applyCaPenalty && state === 'CA') ? 800 : 0;
+      let llcTax = (applyLLCTax && state === 'CA') ? 800 : 0;
+
+      const totalTax = federalTax + selfEmploymentTax + stateTax + caPenalty + llcTax;
+      const netIncome = income - totalTax;
+      const effectiveRate = totalTax / income * 100;
+
+      const output = `
+        <p><strong>Federal Tax:</strong> ${formatCurrency(federalTax)}</p>
+        <p><strong>Self-Employment Tax:</strong> ${formatCurrency(selfEmploymentTax)}</p>
+        <p><strong>State Tax (${state}):</strong> ${formatCurrency(stateTax)}</p>
+        ${caPenalty ? `<p><strong>CA Health Penalty:</strong> ${formatCurrency(caPenalty)}</p>` : ''}
+        ${llcTax ? `<p><strong>CA LLC Tax:</strong> ${formatCurrency(llcTax)}</p>` : ''}
+        <p><strong>Total Estimated Tax:</strong> ${formatCurrency(totalTax)}</p>
+        <p><strong>Net Income After Tax:</strong> ${formatCurrency(netIncome)}</p>
+        <p><strong>Effective Tax Rate:</strong> ${effectiveRate.toFixed(2)}%</p>
+      `;
+
+      document.getElementById('output').innerHTML = output;
+    }
+  </script>
+</body>
+</html>

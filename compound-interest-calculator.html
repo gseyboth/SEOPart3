@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compound Interest Calculator | DIYMoneyTools</title>
+  <meta name="description" content="Estimate compound interest on savings, investments, or custom plans. Choose a stock market scenario, savings account, or custom interest rate to see your growth.">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    h1 {
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    .option-group {
+      margin-top: 20px;
+    }
+    .option-group label {
+      display: inline-block;
+      margin-right: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+    }
+    #result {
+      margin-top: 25px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Compound Interest Calculator</h1>
+  <p>This tool helps you calculate how much your money can grow over time using compound interest. Select from a stock market scenario, a savings account, or customize your own rate.</p>
+
+  <div class="option-group">
+    <label><input type="radio" name="mode" value="stock" checked /> Stock Market (~7%)</label>
+    <label><input type="radio" name="mode" value="savings" /> Savings Account (~1%)</label>
+    <label><input type="radio" name="mode" value="custom" /> Custom</label>
+  </div>
+
+  <label for="principal">Initial Amount ($):</label>
+  <input type="number" id="principal" placeholder="e.g., 5000" />
+
+  <label for="contribution">Monthly Contribution ($):</label>
+  <input type="number" id="contribution" placeholder="e.g., 200" />
+
+  <label for="years">Years to Grow:</label>
+  <input type="number" id="years" placeholder="e.g., 20" />
+
+  <div id="customRateWrapper" style="display: none;">
+    <label for="rate">Custom Annual Interest Rate (%):</label>
+    <input type="number" id="rate" placeholder="e.g., 5" />
+  </div>
+
+  <button onclick="calculateCompound()">Calculate</button>
+
+  <div id="result"></div>
+
+  <script>
+    document.querySelectorAll('input[name="mode"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const isCustom = document.querySelector('input[name="mode"]:checked').value === 'custom';
+        document.getElementById('customRateWrapper').style.display = isCustom ? 'block' : 'none';
+      });
+    });
+
+    function calculateCompound() {
+      const principal = parseFloat(document.getElementById('principal').value);
+      const contribution = parseFloat(document.getElementById('contribution').value);
+      const years = parseInt(document.getElementById('years').value);
+      const mode = document.querySelector('input[name="mode"]:checked').value;
+
+      let annualRate;
+      if (mode === 'stock') annualRate = 7;
+      else if (mode === 'savings') annualRate = 1;
+      else annualRate = parseFloat(document.getElementById('rate').value);
+
+      const monthlyRate = annualRate / 100 / 12;
+      const months = years * 12;
+
+      let total = principal * Math.pow(1 + monthlyRate, months);
+      for (let i = 1; i <= months; i++) {
+        total += contribution * Math.pow(1 + monthlyRate, months - i);
+      }
+
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+
+      document.getElementById('result').innerHTML = `
+        <h3>Estimated Total After ${years} Years:</h3>
+        <p><strong>${formatter.format(total)}</strong></p>
+        <p>Assuming ${formatter.format(principal)} starting, ${formatter.format(contribution)} monthly, at ${annualRate}% annual interest.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
