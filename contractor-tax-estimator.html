@@ -65,7 +65,7 @@
 
   <script>
     function formatCurrency(value) {
-      return "$" + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return "$" + value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
     function calculateTaxes() {
@@ -97,10 +97,10 @@
       let stateTax = 0;
 
       if (state === 'CA') stateTax = taxableIncome * 0.09;
-      else if (state === 'NY') stateTax = taxableIncome * 0.062;
-      else if (state === 'IL') stateTax = taxableIncome * 0.0495;
-      else if (state === 'FL' || state === 'TX') stateTax = 0;
-      else stateTax = taxableIncome * 0.05;
+      if (state === 'NY') stateTax = taxableIncome * 0.062;
+      if (state === 'IL') stateTax = taxableIncome * 0.0495;
+      if (state === 'FL' || state === 'TX') stateTax = 0;
+      if (state === 'Other') stateTax = taxableIncome * 0.05;
 
       let caPenalty = (applyCaPenalty && state === 'CA') ? 800 : 0;
       let llcTax = (applyLLCTax && state === 'CA') ? 800 : 0;
