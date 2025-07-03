@@ -1,3 +1,4 @@
 http://diymoneytools.com/*       https://www.diymoneytools.com/:splat  301!
 https://diymoneytools.com/*      https://www.diymoneytools.com/:splat  301!
 http://www.diymoneytools.com/*   https://www.diymoneytools.com/:splat  301!
+/mortgage-calculator  /mortgage-calculator.html  301
