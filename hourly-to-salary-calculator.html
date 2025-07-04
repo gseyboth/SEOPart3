@@ -14,9 +14,9 @@
 </head>
 <body>
 
-  <h1>Hourly to Salary Calculator</h1>
+  <h1>Hourly to Salary Calculator – Convert Hourly Pay to Annual Salary</h1>
 
-  <p>Quickly convert your hourly wage into an annual salary based on your hours worked per week and weeks worked per year. Great for freelancers, hourly employees, and job seekers.</p>
+  <p>Quickly convert your hourly wage into an estimated yearly salary. Great for freelancers, hourly workers, and job seekers comparing offers. Adjust your hours and weeks worked to get a more accurate estimate.</p>
 
   <form>
     <label>Hourly Rate ($): <input type="number" id="hourlyRate"></label><br><br>
@@ -36,8 +36,15 @@
 
       const annualSalary = hourlyRate * hoursPerWeek * weeksPerYear;
 
+      const formatted = annualSalary.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
       document.getElementById('results').innerHTML = `
-        <p><strong>Estimated Annual Salary:</strong> $${annualSalary.toFixed(2)}</p>
+        <p><strong>Estimated Annual Salary:</strong> ${formatted}</p>
       `;
     }
   </script>
@@ -45,9 +52,6 @@
   <footer>
     <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
   </footer>
-
-</body>
-</html>
 
 </body>
 </html>
