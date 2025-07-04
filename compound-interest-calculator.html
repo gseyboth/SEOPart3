@@ -88,15 +88,15 @@
     });
 
     function calculateCompound() {
-      const principal = parseFloat(document.getElementById('principal').value);
-      const contribution = parseFloat(document.getElementById('contribution').value);
-      const years = parseInt(document.getElementById('years').value);
+      const principal = parseFloat(document.getElementById('principal').value) || 0;
+      const contribution = parseFloat(document.getElementById('contribution').value) || 0;
+      const years = parseInt(document.getElementById('years').value) || 0;
       const mode = document.querySelector('input[name="mode"]:checked').value;
 
       let annualRate;
       if (mode === 'stock') annualRate = 7;
       else if (mode === 'savings') annualRate = 1;
-      else annualRate = parseFloat(document.getElementById('rate').value);
+      else annualRate = parseFloat(document.getElementById('rate').value) || 0;
 
       const monthlyRate = annualRate / 100 / 12;
       const months = years * 12;
@@ -106,15 +106,17 @@
         total += contribution * Math.pow(1 + monthlyRate, months - i);
       }
 
-      const formatter = new Intl.NumberFormat('en-US', {
+      const formattedTotal = total.toLocaleString('en-US', {
         style: 'currency',
-        currency: 'USD'
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       });
 
       document.getElementById('result').innerHTML = `
         <h3>Estimated Total After ${years} Years:</h3>
-        <p><strong>${formatter.format(total)}</strong></p>
-        <p>Assuming ${formatter.format(principal)} starting, ${formatter.format(contribution)} monthly, at ${annualRate}% annual interest.</p>
+        <p><strong>${formattedTotal}</strong></p>
+        <p>Assuming $${principal.toLocaleString()} starting, $${contribution.toLocaleString()} monthly, at ${annualRate}% annual interest.</p>
       `;
     }
   </script>
