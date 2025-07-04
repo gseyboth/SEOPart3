@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Side Hustle Profit Calculator | DIY Money Tools</title>
+  <meta name="description" content="Quickly calculate your side hustle profit after expenses and taxes. Perfect for freelancers and gig workers.">
+</head>
+<body>
+  <h1>Side Hustle Profit Calculator</h1>
+
+  <form>
+    <label>Gross Income ($): <input type="number" id="grossIncome"></label><br><br>
+    <label>Total Expenses ($): <input type="number" id="expenses"></label><br><br>
+    <label>Estimated Tax Rate (%): <input type="number" id="taxRate" value="15"></label><br><br>
+    <button type="button" onclick="calculateProfit()">Calculate</button>
+  </form>
+
+  <h2>Results:</h2>
+  <div id="results"></div>
+
+  <script>
+    function calculateProfit() {
+      const gross = parseFloat(document.getElementById('grossIncome').value) || 0;
+      const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+
+      const net = gross - expenses;
+      const taxes = net * (taxRate / 100);
+      const finalProfit = net - taxes;
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Net Income (before tax):</strong> $${net.toFixed(2)}</p>
+        <p><strong>Estimated Taxes:</strong> $${taxes.toFixed(2)}</p>
+        <p><strong>Final Profit:</strong> $${finalProfit.toFixed(2)}</p>
+      `;
+    }
+  </script>
+</body>
+</html>

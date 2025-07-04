@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent vs Buy Calculator | DIY Money Tools</title>
+  <meta name="description" content="Compare the long-term cost of renting vs buying a home based on your monthly rent, home price, interest rate, and years of ownership.">
+</head>
+<body>
+  <h1>Rent vs Buy Calculator</h1>
+
+  <form>
+    <label>Monthly Rent ($): <input type="number" id="monthlyRent"></label><br><br>
+    <label>Home Purchase Price ($): <input type="number" id="homePrice"></label><br><br>
+    <label>Mortgage Interest Rate (%): <input type="number" id="interestRate"></label><br><br>
+    <label>Loan Term (years): <input type="number" id="loanTerm" value="30"></label><br><br>
+    <label>Years You Plan to Stay: <input type="number" id="stayYears" value="5"></label><br><br>
+    <button type="button" onclick="compareRentVsBuy()">Compare</button>
+  </form>
+
+  <h2>Results:</h2>
+  <div id="results"></div>
+
+  <script>
+    function compareRentVsBuy() {
+      const rent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+      const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+      const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+      const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 30;
+      const stayYears = parseFloat(document.getElementById('stayYears').value) || 5;
+
+      const monthsStayed = stayYears * 12;
+      const totalRent = rent * monthsStayed;
+
+      const monthlyRate = (interestRate / 100) / 12;
+      const loanMonths = loanTerm * 12;
+      const monthlyMortgage = (homePrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -loanMonths));
+      const totalMortgage = monthlyMortgage * monthsStayed;
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Total Rent Paid:</strong> $${totalRent.toFixed(2)}</p>
+        <p><strong>Total Mortgage Payments (during stay):</strong> $${totalMortgage.toFixed(2)}</p>
+      `;
+    }
+  </script>
+</body>
+</html>

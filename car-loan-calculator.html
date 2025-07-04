@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Car Loan Calculator | DIY Money Tools</title>
+  <meta name="description" content="Calculate your monthly car loan payments based on loan amount, interest rate, and loan term.">
+</head>
+<body>
+  <h1>Car Loan Calculator</h1>
+
+  <form>
+    <label>Loan Amount ($): <input type="number" id="loanAmount"></label><br><br>
+    <label>Annual Interest Rate (%): <input type="number" id="interestRate"></label><br><br>
+    <label>Loan Term (months): <input type="number" id="loanTerm"></label><br><br>
+    <button type="button" onclick="calculateCarLoan()">Calculate</button>
+  </form>
+
+  <h2>Results:</h2>
+  <div id="results"></div>
+
+  <script>
+    function calculateCarLoan() {
+      const principal = parseFloat(document.getElementById('loanAmount').value) || 0;
+      const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
+      const months = parseFloat(document.getElementById('loanTerm').value) || 0;
+
+      const monthlyRate = (annualRate / 100) / 12;
+      const monthlyPayment = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Monthly Payment:</strong> $${monthlyPayment.toFixed(2)}</p>
+      `;
+    }
+  </script>
+</body>
+</html>
