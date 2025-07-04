@@ -1,98 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Debt Snowball Method Calculator | DIY Money Tools</title>
-  <meta name="description" content="Use our free Debt Snowball Calculator to plan your debt payoff strategy. Organize debts, minimize interest, and eliminate balances faster using the snowball method." />
-  <meta name="keywords" content="debt snowball calculator, payoff debt faster, snowball method, debt payoff planner, eliminate debt, credit card calculator, loan repayment tool" />
-  <link rel="canonical" href="https://www.diymoneytools.com/debt-snowball-calculator" />
-  <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 2rem; }
-    h1 { color: #2c3e50; }
-    label, input { display: block; margin: 0.5rem 0; }
-    input { padding: 0.5rem; width: 100%; max-width: 300px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: #fff; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-    th, td { padding: 0.75rem; border: 1px solid #ccc; text-align: left; }
-    .button { margin-top: 1rem; padding: 0.75rem 1.5rem; background: #2c3e50; color: #fff; border: none; cursor: pointer; }
-    .result { margin-top: 2rem; background: #eaf7ea; padding: 1rem; border-radius: 8px; }
-    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Debt Snowball Calculator | Pay Off Debt Faster with the Snowball Method</title>
+  
+  <meta name="description" content="Use our free Debt Snowball Calculator to create your personalized debt payoff plan. List your debts, choose your payoff strategy, and track your progress toward becoming debt-free.">
+
+  <meta name="keywords" content="Debt Snowball Calculator, Pay Off Debt, Snowball Method, Debt Payoff Plan, Personal Finance Tools, Financial Freedom, Credit Card Payoff">
+
+  <link rel="canonical" href="https://diymoneytools.com/debt-snowball-calculator.html">
 </head>
 <body>
 
   <h1>Debt Snowball Calculator</h1>
-  <p>List up to 5 debts below and we'll calculate your snowball plan — starting with the smallest balance first.</p>
 
-  <div id="debt-form"></div>
-  <button class="button" onclick="calculateSnowball()">Calculate Payoff Plan</button>
+  <p>Use this debt snowball calculator to plan your debt payoff strategy. Enter your debts and monthly payment, and we'll estimate how quickly you can pay off your balances using the snowball method.</p>
 
-  <div class="result" id="result"></div>
+  <form>
+    <label>Debt 1 Amount ($): <input type="number" id="debt1"></label><br><br>
+    <label>Debt 2 Amount ($): <input type="number" id="debt2"></label><br><br>
+    <label>Debt 3 Amount ($): <input type="number" id="debt3"></label><br><br>
+    <label>Debt 4 Amount ($): <input type="number" id="debt4"></label><br><br>
+    <label>Monthly Payment ($): <input type="number" id="monthlyPayment"></label><br><br>
+    <button type="button" onclick="calculateSnowball()">Calculate</button>
+  </form>
 
-  <footer>
-    © 2025 DIY Money Tools. For estimation only. Always consult a financial advisor.
-  </footer>
+  <h2>Results:</h2>
+  <div id="results"></div>
 
   <script>
-    const form = document.getElementById('debt-form');
-    for (let i = 1; i <= 5; i++) {
-      form.innerHTML += `
-        <label>Debt ${i} - Balance ($): <input type="number" id="balance${i}" /></label>
-        <label>Debt ${i} - Interest Rate (%): <input type="number" id="rate${i}" /></label>
-        <label>Debt ${i} - Minimum Payment ($): <input type="number" id="minPay${i}" /></label>
-        <hr />
-      `;
-    }
-
-    function formatCurrency(val) {
-      return "$" + val.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-
     function calculateSnowball() {
-      const debts = [];
-      for (let i = 1; i <= 5; i++) {
-        const balance = parseFloat(document.getElementById(`balance${i}`).value);
-        const rate = parseFloat(document.getElementById(`rate${i}`).value);
-        const minPay = parseFloat(document.getElementById(`minPay${i}`).value);
-        if (!isNaN(balance) && !isNaN(rate) && !isNaN(minPay)) {
-          debts.push({ balance, rate, minPay });
-        }
-      }
+      const debts = [
+        parseFloat(document.getElementById('debt1').value) || 0,
+        parseFloat(document.getElementById('debt2').value) || 0,
+        parseFloat(document.getElementById('debt3').value) || 0,
+        parseFloat(document.getElementById('debt4').value) || 0,
+      ].sort((a, b) => a - b); // sort debts from smallest to largest
 
-      if (debts.length === 0) {
-        document.getElementById('result').innerHTML = '<p>Please enter at least one valid debt.</p>';
-        return;
-      }
-
-      debts.sort((a, b) => a.balance - b.balance);
-      let snowball = 0;
-      let totalInterest = 0;
+      const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value) || 0;
       let months = 0;
+      let totalPaid = 0;
 
-      while (debts.length > 0) {
+      while (debts.some(d => d > 0)) {
         months++;
-        let payment = 0;
+        let payment = monthlyPayment;
+
         for (let i = 0; i < debts.length; i++) {
-          const interest = debts[i].balance * (debts[i].rate / 100) / 12;
-          debts[i].balance += interest;
-          totalInterest += interest;
-          let toPay = debts[i].minPay;
-          if (i === 0) toPay += snowball;
-          debts[i].balance -= toPay;
-          payment += toPay;
-        }
-        if (debts[0].balance <= 0) {
-          snowball += debts[0].minPay;
-          debts.shift();
+          if (debts[i] > 0 && payment > 0) {
+            const paymentAmount = Math.min(debts[i], payment);
+            debts[i] -= paymentAmount;
+            payment -= paymentAmount;
+            totalPaid += paymentAmount;
+          }
         }
       }
 
-      document.getElementById('result').innerHTML = `
-        <h3>Payoff Plan Summary:</h3>
-        <p><strong>Total Months to Pay Off:</strong> ${months}</p>
-        <p><strong>Total Interest Paid:</strong> ${formatCurrency(totalInterest)}</p>
-        <p><strong>Estimated Debt-Free Date:</strong> ${new Date(new Date().setMonth(new Date().getMonth() + months)).toLocaleDateString()}</p>
+      document.getElementById('results').innerHTML = `
+        <p><strong>Estimated Total Paid:</strong> $${totalPaid.toFixed(2)}</p>
+        <p><strong>Estimated Months to Pay Off:</strong> ${months}</p>
       `;
     }
   </script>
+
+  <footer>
+    <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+  </footer>
+
 </body>
+</html>
