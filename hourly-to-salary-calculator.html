@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hourly to Salary Calculator | Convert Hourly Pay to Annual Salary</title>
+  
+  <meta name="description" content="Convert your hourly wage into an annual salary in seconds. Perfect for freelancers, hourly workers, and anyone comparing job offers.">
+  
+  <meta name="keywords" content="Hourly to Salary Calculator, Convert Hourly Wage, Hourly Pay to Annual Salary, Salary Converter, Freelance Pay Calculator">
+
+  <link rel="canonical" href="https://diymoneytools.com/hourly-to-salary-calculator.html">
+</head>
+<body>
+
+  <h1>Hourly to Salary Calculator</h1>
+
+  <p>Quickly convert your hourly wage into an annual salary based on your hours worked per week and weeks worked per year. Great for freelancers, hourly employees, and job seekers.</p>
+
+  <form>
+    <label>Hourly Rate ($): <input type="number" id="hourlyRate"></label><br><br>
+    <label>Hours Worked Per Week: <input type="number" id="hoursPerWeek" value="40"></label><br><br>
+    <label>Weeks Worked Per Year: <input type="number" id="weeksPerYear" value="52"></label><br><br>
+    <button type="button" onclick="calculateSalary()">Calculate</button>
+  </form>
+
+  <h2>Results:</h2>
+  <div id="results"></div>
+
+  <script>
+    function calculateSalary() {
+      const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+      const hoursPerWeek = parseFloat(document.getElementById('hoursPerWeek').value) || 0;
+      const weeksPerYear = parseFloat(document.getElementById('weeksPerYear').value) || 0;
+
+      const annualSalary = hourlyRate * hoursPerWeek * weeksPerYear;
+
+      document.getElementById('results').innerHTML = `
+        <p><strong>Estimated Annual Salary:</strong> $${annualSalary.toFixed(2)}</p>
+      `;
+    }
+  </script>
+
+  <footer>
+    <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+  </footer>
+
+</body>
+</html>
+
+</body>
+</html>
