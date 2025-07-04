@@ -1,4 +1,11 @@
-http://diymoneytools.com/*       https://www.diymoneytools.com/:splat  301!
-https://diymoneytools.com/*      https://www.diymoneytools.com/:splat  301!
-http://www.diymoneytools.com/*   https://www.diymoneytools.com/:splat  301!
-/mortgage-calculator  /mortgage-calculator.html  301
+/side-hustle  /side-hustle-calculator.html  301
+/car-loan     /car-loan-calculator.html    301
+/rent-buy     /rent-vs-buy-calculator.html 301
+
+# Future-friendly tool redirects (optional)
+/tools/side-hustle-profit  /side-hustle-calculator.html  301
+/tools/car-loan-payment    /car-loan-calculator.html    301
+/tools/rent-vs-buy         /rent-vs-buy-calculator.html 301
+
+# Catch-all: redirect unmatched URLs to home page with a 404 status
+/*  /index.html  404
