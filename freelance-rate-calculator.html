@@ -1,52 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Freelance Hourly Rate Calculator | Target Income Rate Planner</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        input, button { padding: 10px; margin-top: 10px; width: 100%; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freelance Hourly Rate Calculator | DIY Money Tools</title>
+  <meta name="description" content="Estimate your freelance hourly rate based on your desired income, expenses, and billable hours. Perfect for freelancers, contractors, and independent workers.">
+  <meta name="keywords" content="freelance hourly rate calculator, contractor rate estimator, self-employed income calculator, freelance pay calculator">
+  <link rel="canonical" href="https://diymoneytools.com/freelance-rate-calculator">
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; background-color: #f8f9fa; }
+    h1 { color: #333; }
+    label { display: block; margin-top: 15px; }
+    input { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px; width: 100%; }
+    #result { margin-top: 25px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #ccc; }
+  </style>
 </head>
 <body>
 
-    <h2>Freelance Hourly Rate Calculator</h2>
+<h1>Freelance Hourly Rate Calculator</h1>
 
-    <label>Desired Annual Income ($):</label>
-<input type="number" id="freelance_income" placeholder="Example: 100000">
+<p>Estimate your freelance hourly rate based on your target annual income, expected business expenses, and how many hours you plan to bill each year. Perfect for freelancers, contractors, and independent workers setting competitive rates.</p>
 
-<label>Billable Hours per Week:</label>
-<input type="number" id="freelance_hours" placeholder="Example: 20">
+<p>Learn more about setting freelance rates in this <a href="https://www.nerdwallet.com/article/finance/freelance-hourly-rate" target="_blank" rel="noopener">NerdWallet freelance guide</a>.</p>
 
-<label>Weeks per Year:</label>
-<input type="number" id="freelance_weeks" placeholder="Example: 48">
+<label for="annualIncome">Target Annual Income ($):</label>
+<input type="number" id="annualIncome" placeholder="e.g., 80000">
 
-<button onclick="calculateFreelanceRate()">Calculate Hourly Rate</button>
+<label for="expenses">Estimated Annual Business Expenses ($):</label>
+<input type="number" id="expenses" placeholder="e.g., 10000">
 
-<div id="freelance_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+<label for="billableHours">Billable Hours Per Year:</label>
+<input type="number" id="billableHours" placeholder="e.g., 1500">
+
+<button onclick="calculateRate()">Calculate Hourly Rate</button>
+
+<div id="result"></div>
 
 <script>
-function calculateFreelanceRate() {
-    const income = parseFloat(document.getElementById('freelance_income').value) || 0;
-    const hoursPerWeek = parseFloat(document.getElementById('freelance_hours').value) || 0;
-    const weeksPerYear = parseFloat(document.getElementById('freelance_weeks').value) || 0;
+  function calculateRate() {
+    const income = parseFloat(document.getElementById('annualIncome').value) || 0;
+    const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+    const hours = parseFloat(document.getElementById('billableHours').value) || 0;
 
-    const totalBillableHours = hoursPerWeek * weeksPerYear;
-    const hourlyRate = income / totalBillableHours;
+    if (hours === 0) {
+      document.getElementById('result').innerHTML = `<p>Please enter your estimated billable hours.</p>`;
+      return;
+    }
 
-    document.getElementById('freelance_result').innerHTML = `
-        <p><strong>Recommended Hourly Rate:</strong> $${hourlyRate.toFixed(2)} per hour</p>
-        <hr>
-        <p>This calculator helps freelancers estimate their target hourly rate to reach a desired income based on available billable hours per year.</p>
-    `;
-}
+    const total = income + expenses;
+    const hourlyRate = total / hours;
+
+    document.getElementById('result').innerHTML = `<p><strong>Suggested Hourly Rate:</strong> $${hourlyRate.toFixed(2)}</p>`;
+  }
 </script>
-
-    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
 
 </body>
 </html>
