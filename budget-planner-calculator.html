@@ -1,48 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>50/30/20 Budget Calculator | Plan Your Monthly Spending Easily</title>
-<meta name="description" content="Break down your monthly income into needs, wants, and savings using the 50/30/20 budgeting rule. Simple tool for financial planning.">
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        input, button { padding: 10px; margin-top: 10px; width: 100%; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Planner Calculator | DIY Money Tools</title>
+  <meta name="description" content="Plan your monthly budget and expenses with our free budget planner calculator. Track income, savings, and spending categories to balance your finances.">
+  <link rel="canonical" href="https://www.diymoneytools.com/budget-planner-calculator.html" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input, select { margin-bottom: 10px; padding: 5px; width: 100%; }
+    button { padding: 8px 12px; }
+    .result { margin-top: 20px; font-weight: bold; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
 </head>
 <body>
+  <h1>Budget Planner Calculator</h1>
 
-    <h2>50/30/20 Budget Planner</h2>
+  <p>Want to take control of your finances? Use our <a href="/budget-planner-calculator.html">Budget Planner Calculator</a> to track your monthly income and expenses by category. If you're also saving for the future, try our <a href="/savings-goal-calculator.html">Savings Goal Calculator</a> to plan ahead.</p>
 
-    <label>Monthly After-Tax Income ($):</label>
-<input type="number" id="budget_income" placeholder="Example: 5000">
+  <h2>Enter Your Monthly Income and Expenses</h2>
 
-<button onclick="calculateBudget()">Calculate Budget Breakdown</button>
+  <label>Monthly Income: <input type="number" id="income" placeholder="e.g., 4000"></label><br>
 
-<div id="budget_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+  <label>Housing: <input type="number" id="housing" placeholder="e.g., 1000"></label><br>
+  <label>Utilities: <input type="number" id="utilities" placeholder="e.g., 200"></label><br>
+  <label>Groceries: <input type="number" id="groceries" placeholder="e.g., 300"></label><br>
+  <label>Transportation: <input type="number" id="transportation" placeholder="e.g., 250"></label><br>
+  <label>Insurance: <input type="number" id="insurance" placeholder="e.g., 150"></label><br>
+  <label>Entertainment: <input type="number" id="entertainment" placeholder="e.g., 100"></label><br>
+  <label>Other Expenses: <input type="number" id="other" placeholder="e.g., 200"></label><br>
 
-<script>
-function calculateBudget() {
-    const income = parseFloat(document.getElementById('budget_income').value) || 0;
+  <button onclick="calculateBudget()">Calculate Budget</button>
 
-    const needs = income * 0.50;
-    const wants = income * 0.30;
-    const savings = income * 0.20;
+  <div class="result" id="result"></div>
 
-    document.getElementById('budget_result').innerHTML = `
-        <p><strong>Needs (50%):</strong> $${needs.toFixed(2)}</p>
-        <p><strong>Wants (30%):</strong> $${wants.toFixed(2)}</p>
-        <p><strong>Savings (20%):</strong> $${savings.toFixed(2)}</p>
-        <hr>
-        <p>This calculator applies the 50/30/20 rule for budgeting: 50% to needs, 30% to wants, and 20% to savings or debt.</p>
-    `;
-}
-</script>
+  <script>
+    function calculateBudget() {
+      const income = parseFloat(document.getElementById('income').value) || 0;
+      const housing = parseFloat(document.getElementById('housing').value) || 0;
+      const utilities = parseFloat(document.getElementById('utilities').value) || 0;
+      const groceries = parseFloat(document.getElementById('groceries').value) || 0;
+      const transportation = parseFloat(document.getElementById('transportation').value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+      const entertainment = parseFloat(document.getElementById('entertainment').value) || 0;
+      const other = parseFloat(document.getElementById('other').value) || 0;
 
-    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+      const totalExpenses = housing + utilities + groceries + transportation + insurance + entertainment + other;
+      const remaining = income - totalExpenses;
 
+      let message = `<h3>Budget Summary</h3>`;
+      message += `<table><tr><th>Income</th><td>$${income.toFixed(2)}</td></tr>`;
+      message += `<tr><th>Total Expenses</th><td>$${totalExpenses.toFixed(2)}</td></tr>`;
+      message += `<tr><th>Remaining Balance</th><td>$${remaining.toFixed(2)}</td></tr></table>`;
+
+      if (remaining < 0) {
+        message += `<p style="color: red;">Warning: Your expenses exceed your income. Consider adjusting your budget.</p>`;
+      } else if (remaining > 0) {
+        message += `<p style="color: green;">Great job! You have money left over to save or invest.</p>`;
+      } else {
+        message += `<p>Your income and expenses are balanced exactly.</p>`;
+      }
+
+      document.getElementById('result').innerHTML = message;
+    }
+  </script>
+
+  <footer>
+    <p><a href="/">Back to DIY Money Tools</a></p>
+  </footer>
 </body>
 </html>
