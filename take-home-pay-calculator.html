@@ -1,54 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Take-Home Pay Calculator | After-Tax Salary Estimator</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        input, button { padding: 10px; margin-top: 10px; width: 100%; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Take-Home Pay Calculator | DIY Money Tools</title>
+
+  <meta name="description" content="Estimate your after-tax paycheck based on your salary, filing status, and deductions. Calculate federal taxes, Social Security, and Medicare withholding.">
+
+  <link rel="canonical" href="https://www.diymoneytools.com/take-home-pay-calculator.html" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input, select { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
 
-    <h2>Take-Home Pay Calculator</h2>
+<h1>Take-Home Pay Calculator</h1>
 
-    <label>Annual Salary ($):</label>
-<input type="number" id="takehome_salary" placeholder="Example: 80000">
+<p>Wondering how much of your paycheck you’ll actually keep? Use our <a href="/take-home-pay-calculator.html">Take-Home Pay Calculator</a> to estimate your federal taxes, Social Security, Medicare, and final take-home pay. If you're self-employed, try our <a href="/contractor-tax-estimator.html">Contractor Tax Estimator</a>.</p>
 
-<label>Federal Tax Rate (%):</label>
-<input type="number" step="0.01" id="takehome_federal_tax" placeholder="Example: 22">
+<h2>Enter Your Pay Information</h2>
 
-<label>State Tax Rate (%):</label>
-<input type="number" step="0.01" id="takehome_state_tax" placeholder="Example: 4.75">
+<label>Annual Salary ($): <input type="number" id="salary" placeholder="e.g., 75000"></label>
+
+<label>Filing Status:
+  <select id="filingStatus">
+    <option value="single">Single</option>
+    <option value="married">Married Filing Jointly</option>
+  </select>
+</label>
+
+<label>Pre-Tax Deductions ($ per year):
+  <input type="number" id="preTaxDeductions" placeholder="e.g., 5000">
+</label>
 
 <button onclick="calculateTakeHome()">Calculate Take-Home Pay</button>
 
-<div id="takehome_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+<div class="result" id="result"></div>
 
 <script>
 function calculateTakeHome() {
-    const salary = parseFloat(document.getElementById('takehome_salary').value) || 0;
-    const federalTax = parseFloat(document.getElementById('takehome_federal_tax').value) / 100 || 0;
-    const stateTax = parseFloat(document.getElementById('takehome_state_tax').value) / 100 || 0;
+  const salary = parseFloat(document.getElementById('salary').value) || 0;
+  const filingStatus = document.getElementById('filingStatus').value;
+  const preTax = parseFloat(document.getElementById('preTaxDeductions').value) || 0;
 
-    const totalTaxRate = federalTax + stateTax;
-    const annualTakeHome = salary * (1 - totalTaxRate);
-    const monthlyTakeHome = annualTakeHome / 12;
+  const stdDeduction = filingStatus === 'single' ? 14600 : 29200;
+  const taxableIncome = Math.max(salary - stdDeduction - preTax, 0);
 
-    document.getElementById('takehome_result').innerHTML = `
-        <p><strong>Estimated Annual Take-Home Pay:</strong> $${annualTakeHome.toFixed(2)}</p>
-        <p><strong>Estimated Monthly Take-Home Pay:</strong> $${monthlyTakeHome.toFixed(2)}</p>
-        <hr>
-        <p>This calculator estimates your take-home pay after federal and state income taxes. It does not include Social Security, Medicare, or other deductions.</p>
-    `;
+  // 2025 federal tax brackets (simplified)
+  const brackets = filingStatus === 'single'
+    ? [[11000, 0.10], [44725, 0.12], [95375, 0.22], [182100, 0.24]]
+    : [[22000, 0.10], [89450, 0.12], [190750, 0.22], [364200, 0.24]];
+
+  let federalTax = 0;
+  let remaining = taxableIncome;
+  let lastCap = 0;
+  for (const [cap, rate] of brackets) {
+    const bracketAmount = Math.min(cap - lastCap, remaining);
+    if (bracketAmount <= 0) break;
+    federalTax += bracketAmount * rate;
+    remaining -= bracketAmount;
+    lastCap = cap;
+  }
+
+  const socialSecurity = salary * 0.062;
+  const medicare = salary * 0.0145;
+
+  const totalTaxes = federalTax + socialSecurity + medicare;
+  const takeHome = salary - totalTaxes - preTax;
+
+  const resultHTML = `
+    <h3>Take-Home Pay Summary</h3>
+    <table>
+      <tr><th>Gross Salary</th><td>$${salary.toFixed(2)}</td></tr>
+      <tr><th>Pre-Tax Deductions</th><td>$${preTax.toFixed(2)}</td></tr>
+      <tr><th>Federal Income Tax</th><td>$${federalTax.toFixed(2)}</td></tr>
+      <tr><th>Social Security</th><td>$${socialSecurity.toFixed(2)}</td></tr>
+      <tr><th>Medicare</th><td>$${medicare.toFixed(2)}</td></tr>
+      <tr><th><strong>Estimated Take-Home Pay</strong></th><td><strong>$${takeHome.toFixed(2)}</strong></td></tr>
+    </table>
+  `;
+
+  document.getElementById('result').innerHTML = resultHTML;
 }
 </script>
 
-    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+<footer>
+  <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+</footer>
 
 </body>
 </html>
