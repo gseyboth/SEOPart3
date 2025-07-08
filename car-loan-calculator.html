@@ -1,37 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Car Loan Calculator | Estimate Your Monthly Auto Loan Payments</title>
-<meta name="description" content="Use our free car loan calculator to estimate your monthly car payment based on loan amount, interest rate, and loan term. Simple & fast.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Loan Calculator | DIY Money Tools</title>
+  <meta name="description" content="Estimate your monthly car loan payments with our free car loan calculator. Adjust loan term, interest rate, and down payment to fit your budget.">
+  <link rel="canonical" href="https://www.diymoneytools.com/car-loan-calculator.html" />
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input, select { margin-bottom: 10px; padding: 5px; width: 100%; }
+    button { padding: 8px 12px; }
+    .result { margin-top: 20px; font-weight: bold; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
 </head>
 <body>
   <h1>Car Loan Calculator</h1>
 
-  <form>
-    <label>Loan Amount ($): <input type="number" id="loanAmount"></label><br><br>
-    <label>Annual Interest Rate (%): <input type="number" id="interestRate"></label><br><br>
-    <label>Loan Term (months): <input type="number" id="loanTerm"></label><br><br>
-    <button type="button" onclick="calculateCarLoan()">Calculate</button>
-  </form>
+  <p>Planning to buy a car? Use our <a href="/car-loan-calculator.html">Car Loan Calculator</a> to estimate your monthly payments based on your loan amount, interest rate, and term. To track your overall monthly expenses, try our <a href="/budget-planner-calculator.html">Budget Planner Calculator</a>.</p>
 
-  <h2>Results:</h2>
-  <div id="results"></div>
+  <h2>Enter Loan Details</h2>
+
+  <label>Car Price ($): <input type="number" id="price" placeholder="e.g., 25000"></label><br>
+  <label>Down Payment ($): <input type="number" id="downPayment" placeholder="e.g., 5000"></label><br>
+  <label>Loan Term (months): <input type="number" id="term" placeholder="e.g., 60"></label><br>
+  <label>Annual Interest Rate (%): <input type="number" id="rate" placeholder="e.g., 5"></label><br>
+
+  <button onclick="calculateCarLoan()">Calculate Payment</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     function calculateCarLoan() {
-      const principal = parseFloat(document.getElementById('loanAmount').value) || 0;
-      const annualRate = parseFloat(document.getElementById('interestRate').value) || 0;
-      const months = parseFloat(document.getElementById('loanTerm').value) || 0;
+      const price = parseFloat(document.getElementById('price').value) || 0;
+      const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+      const term = parseFloat(document.getElementById('term').value) || 1;
+      const rate = parseFloat(document.getElementById('rate').value) || 0;
 
-      const monthlyRate = (annualRate / 100) / 12;
-      const monthlyPayment = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -months));
+      const loanAmount = price - downPayment;
+      const monthlyRate = rate / 100 / 12;
+      const monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -term));
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Monthly Payment:</strong> $${monthlyPayment.toFixed(2)}</p>
-      `;
+      let message = `<h3>Car Loan Summary</h3>`;
+      message += `<table><tr><th>Loan Amount</th><td>$${loanAmount.toFixed(2)}</td></tr>`;
+      message += `<tr><th>Monthly Payment</th><td>$${monthlyPayment.toFixed(2)}</td></tr>`;
+      message += `<tr><th>Total of ${term} Payments</th><td>$${(monthlyPayment * term).toFixed(2)}</td></tr></table>`;
+
+      document.getElementById('result').innerHTML = message;
     }
   </script>
+
+  <footer>
+    <p><a href="/">Back to DIY Money Tools</a></p>
+  </footer>
 </body>
 </html>
