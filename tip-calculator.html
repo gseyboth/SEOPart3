@@ -1,50 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tip Calculator | Calculate Restaurant Tips & Split Bills</title>
-<meta name="description" content="Quickly calculate tips for your restaurant bill and split the total with friends. Adjust for tip percentage and group size.">
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-        input, button { padding: 10px; margin-top: 10px; width: 100%; }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #results { margin-top: 20px; padding: 10px; background: #f8f8f8; border: 1px solid #ccc; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Tip Calculator | DIY Money Tools</title>
+
+  <meta name="description" content="Quickly calculate the perfect tip and split the bill between friends. Enter your bill amount and tip percentage to see the total for each person.">
+
+  <link rel="canonical" href="https://www.diymoneytools.com/tip-calculator.html" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 500px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; }
+    button { padding: 10px 15px; width: 100%; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
 
-    <h2>Tip Calculator</h2>
+<h1>Tip Calculator</h1>
 
-    <label>Bill Amount ($):</label>
-<input type="number" id="tip_bill" placeholder="Example: 85.50">
+<p>Quickly figure out the tip and split the bill. Use our <a href="/tip-calculator.html">Tip Calculator</a> to calculate tips for restaurants, taxis, and services. Need to track your freelance income? Check out our <a href="/side-hustle-calculator.html">Side Hustle Calculator</a>.</p>
 
-<label>Tip Percentage (%):</label>
-<input type="number" id="tip_percent" placeholder="Example: 18">
+<h2>Enter Your Bill Details</h2>
 
-<button onclick="calculateTip()">Calculate Tip</button>
+<label>Bill Amount ($):
+  <input type="number" id="billAmount" placeholder="e.g., 85.50">
+</label>
 
-<div id="tip_result" style="margin-top:20px; background:#f8f8f8; padding:10px; border:1px solid #ccc;"></div>
+<label>Tip Percentage (%):
+  <input type="number" id="tipPercent" placeholder="e.g., 20">
+</label>
+
+<label>Number of People Splitting the Bill:
+  <input type="number" id="people" placeholder="e.g., 3">
+</label>
+
+<button onclick="calculateTip()">Calculate</button>
+
+<div class="result" id="result"></div>
 
 <script>
 function calculateTip() {
-    const bill = parseFloat(document.getElementById('tip_bill').value) || 0;
-    const tipPercent = parseFloat(document.getElementById('tip_percent').value) / 100 || 0;
+  const bill = parseFloat(document.getElementById('billAmount').value) || 0;
+  const tipPercent = parseFloat(document.getElementById('tipPercent').value) / 100 || 0;
+  const people = parseInt(document.getElementById('people').value) || 1;
 
-    const tipAmount = bill * tipPercent;
-    const totalBill = bill + tipAmount;
+  const tipAmount = bill * tipPercent;
+  const totalAmount = bill + tipAmount;
+  const perPerson = totalAmount / people;
 
-    document.getElementById('tip_result').innerHTML = `
-        <p><strong>Tip Amount:</strong> $${tipAmount.toFixed(2)}</p>
-        <p><strong>Total Bill with Tip:</strong> $${totalBill.toFixed(2)}</p>
-        <hr>
-        <p>This simple calculator helps you quickly estimate the correct tip and total bill amount for dining or services.</p>
-    `;
+  const resultHTML = `
+    <h3>Tip & Total</h3>
+    <table>
+      <tr><th>Tip Amount</th><td>$${tipAmount.toFixed(2)}</td></tr>
+      <tr><th>Total Bill (with Tip)</th><td>$${totalAmount.toFixed(2)}</td></tr>
+      <tr><th>Each Person Pays</th><td>$${perPerson.toFixed(2)}</td></tr>
+    </table>
+  `;
+
+  document.getElementById('result').innerHTML = resultHTML;
 }
 </script>
 
-    <p style="margin-top: 20px;"><a href="index.html">Back to Home</a></p>
+<footer>
+  <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+</footer>
 
 </body>
 </html>
