@@ -1,47 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rent vs Buy Calculator | Compare Long-Term Housing Costs</title>
-<meta name="description" content="Compare the long-term costs of renting vs buying a home. Estimate your housing expenses based on rent, home price, mortgage rates, and years of ownership.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Rent vs Buy Calculator | DIY Money Tools</title>
+  
+  <meta name="description" content="Compare the long-term costs of renting versus buying a home with our rent vs buy calculator. Factor in home appreciation, rent increases, and ownership costs.">
+  
+  <link rel="canonical" href="https://www.diymoneytools.com/rent-vs-buy-calculator.html" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
+
   <h1>Rent vs Buy Calculator</h1>
 
-  <form>
-    <label>Monthly Rent ($): <input type="number" id="monthlyRent"></label><br><br>
-    <label>Home Purchase Price ($): <input type="number" id="homePrice"></label><br><br>
-    <label>Mortgage Interest Rate (%): <input type="number" id="interestRate"></label><br><br>
-    <label>Loan Term (years): <input type="number" id="loanTerm" value="30"></label><br><br>
-    <label>Years You Plan to Stay: <input type="number" id="stayYears" value="5"></label><br><br>
-    <button type="button" onclick="compareRentVsBuy()">Compare</button>
-  </form>
+  <p>Trying to decide between renting and buying? Our <a href="/rent-vs-buy-calculator.html">Rent vs Buy Calculator</a> compares the long-term costs of homeownership versus renting, factoring in appreciation, rent increases, and ownership costs. If you're ready to estimate your mortgage payments, use our <a href="/mortgage-calculator.html">Mortgage Calculator</a>.</p>
 
-  <h2>Results:</h2>
-  <div id="results"></div>
+  <h2>Enter Your Details</h2>
+
+  <label>Home Price ($): <input type="number" id="homePrice" placeholder="e.g., 350000"></label>
+  <label>Down Payment ($): <input type="number" id="downPayment" placeholder="e.g., 50000"></label>
+  <label>Loan Term (years): <input type="number" id="loanTerm" placeholder="e.g., 30"></label>
+  <label>Annual Interest Rate (%): <input type="number" id="interestRate" placeholder="e.g., 6.5"></label>
+  <label>Annual Property Taxes ($): <input type="number" id="propertyTaxes" placeholder="e.g., 3600"></label>
+  <label>Annual Home Insurance ($): <input type="number" id="insurance" placeholder="e.g., 1200"></label>
+  <label>Expected Home Appreciation (% per year): <input type="number" id="homeAppreciation" placeholder="e.g., 3"></label>
+
+  <hr>
+
+  <label>Monthly Rent ($): <input type="number" id="monthlyRent" placeholder="e.g., 1800"></label>
+  <label>Expected Rent Increase (% per year): <input type="number" id="rentIncrease" placeholder="e.g., 2"></label>
+
+  <hr>
+
+  <label>Comparison Period (years): <input type="number" id="years" placeholder="e.g., 7"></label>
+
+  <button onclick="compareRentVsBuy()">Compare</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     function compareRentVsBuy() {
-      const rent = parseFloat(document.getElementById('monthlyRent').value) || 0;
       const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
-      const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+      const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
       const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 30;
-      const stayYears = parseFloat(document.getElementById('stayYears').value) || 5;
+      const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 || 0;
+      const propertyTaxes = parseFloat(document.getElementById('propertyTaxes').value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+      const homeAppreciation = parseFloat(document.getElementById('homeAppreciation').value) / 100 || 0;
 
-      const monthsStayed = stayYears * 12;
-      const totalRent = rent * monthsStayed;
+      const monthlyRent = parseFloat(document.getElementById('monthlyRent').value) || 0;
+      const rentIncrease = parseFloat(document.getElementById('rentIncrease').value) / 100 || 0;
+      const years = parseFloat(document.getElementById('years').value) || 1;
 
-      const monthlyRate = (interestRate / 100) / 12;
-      const loanMonths = loanTerm * 12;
-      const monthlyMortgage = (homePrice * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -loanMonths));
-      const totalMortgage = monthlyMortgage * monthsStayed;
+      const loanAmount = homePrice - downPayment;
+      const monthlyRate = interestRate / 12;
+      const totalMonths = loanTerm * 12;
+      const monthlyPmt = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -totalMonths));
+      const totalMonthlyHousing = monthlyPmt + propertyTaxes / 12 + insurance / 12;
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Total Rent Paid:</strong> $${totalRent.toFixed(2)}</p>
-        <p><strong>Total Mortgage Payments (during stay):</strong> $${totalMortgage.toFixed(2)}</p>
+      // Calculate total home costs over the period
+      const totalOwnershipCost = totalMonthlyHousing * 12 * years;
+      const homeValueIncrease = homePrice * Math.pow(1 + homeAppreciation, years);
+      const homeEquity = homeValueIncrease - loanAmount; // simplified equity approximation
+
+      // Calculate total rent over the period
+      let totalRent = 0;
+      let rent = monthlyRent;
+      for (let i = 0; i < years; i++) {
+        totalRent += rent * 12;
+        rent *= (1 + rentIncrease);
+      }
+
+      const resultHTML = `
+        <h3>Cost Comparison Over ${years} Years</h3>
+        <table>
+          <tr><th>Total Cost of Owning</th><td>$${totalOwnershipCost.toFixed(2)}</td></tr>
+          <tr><th>Estimated Home Value (Future)</th><td>$${homeValueIncrease.toFixed(2)}</td></tr>
+          <tr><th>Approximate Home Equity Gained</th><td>$${homeEquity.toFixed(2)}</td></tr>
+          <tr><th>Total Rent Paid</th><td>$${totalRent.toFixed(2)}</td></tr>
+        </table>
+
+        <p>Note: This is a simplified estimate and does not include maintenance, closing costs, HOA fees, or investment return on down payment if renting.</p>
       `;
+
+      document.getElementById('result').innerHTML = resultHTML;
     }
   </script>
+
+  <footer>
+    <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+  </footer>
+
 </body>
 </html>
