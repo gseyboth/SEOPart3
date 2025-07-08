@@ -3,88 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mortgage Calculator | Estimate Your Monthly Home Loan Payment</title>
-<meta name="description" content="Calculate your monthly mortgage payment based on home price, interest rate, loan term, and down payment. Simple and fast.">
+
+  <title>Mortgage Calculator | DIY Money Tools</title>
+
+  <meta name="description" content="Estimate your monthly mortgage payments with our free mortgage calculator. Adjust your loan term, interest rate, and add property taxes or insurance.">
+
+  <link rel="canonical" href="https://www.diymoneytools.com/mortgage-calculator.html" />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #f8f9fa;
-    }
-    h1 {
-      color: #333;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-    }
-    #result {
-      margin-top: 25px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
   </style>
 </head>
 <body>
+
   <h1>Mortgage Calculator</h1>
-  <p>This free mortgage calculator helps you estimate your monthly payment based on home price, down payment, interest rate, and term length. Perfect for budgeting your next home purchase.</p>
 
-  <label for="price">Home Price ($):</label>
-  <input type="number" id="price" placeholder="e.g., 350000" />
+  <p>Planning to buy a home? Use our <a href="/mortgage-calculator.html">Mortgage Calculator</a> to estimate your monthly payments. Adjust your loan term, interest rate, and property expenses. Want to compare renting vs buying? Try our upcoming <a href="/rent-vs-buy-calculator.html">Rent vs Buy Calculator</a>.</p>
 
-  <label for="down">Down Payment ($):</label>
-  <input type="number" id="down" placeholder="e.g., 50000" />
+  <h2>Enter Mortgage Details</h2>
 
-  <label for="rate">Interest Rate (%):</label>
-  <input type="number" id="rate" placeholder="e.g., 6.5" />
+  <label>Home Price ($):
+    <input type="number" id="homePrice" placeholder="e.g., 350000">
+  </label>
 
-  <label for="term">Loan Term (Years):</label>
-  <select id="term">
-    <option value="15">15 Years</option>
-    <option value="20">20 Years</option>
-    <option value="30" selected>30 Years</option>
-  </select>
+  <label>Down Payment ($):
+    <input type="number" id="downPayment" placeholder="e.g., 50000">
+  </label>
 
-  <button onclick="calculateMortgage()">Calculate</button>
+  <label>Loan Term (years):
+    <input type="number" id="loanTerm" placeholder="e.g., 30">
+  </label>
 
-  <div id="result"></div>
+  <label>Annual Interest Rate (%):
+    <input type="number" id="interestRate" placeholder="e.g., 6.5">
+  </label>
+
+  <label>Annual Property Taxes ($):
+    <input type="number" id="propertyTaxes" placeholder="e.g., 3600">
+  </label>
+
+  <label>Annual Home Insurance ($):
+    <input type="number" id="insurance" placeholder="e.g., 1200">
+  </label>
+
+  <button onclick="calculateMortgage()">Calculate Payment</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     function calculateMortgage() {
-      const price = parseFloat(document.getElementById('price').value);
-      const down = parseFloat(document.getElementById('down').value);
-      const rate = parseFloat(document.getElementById('rate').value) / 100 / 12;
-      const years = parseInt(document.getElementById('term').value);
-      const months = years * 12;
+      const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+      const downPayment = parseFloat(document.getElementById('downPayment').value) || 0;
+      const loanTerm = parseFloat(document.getElementById('loanTerm').value) || 30;
+      const interestRate = parseFloat(document.getElementById('interestRate').value) / 100 || 0;
+      const propertyTaxes = parseFloat(document.getElementById('propertyTaxes').value) || 0;
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
 
-      const loan = price - down;
-      const monthlyPayment = (loan * rate) / (1 - Math.pow(1 + rate, -months));
+      const loanAmount = homePrice - downPayment;
+      const monthlyRate = interestRate / 12;
+      const totalMonths = loanTerm * 12;
 
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      });
+      const principalAndInterest = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -totalMonths));
+      const monthlyTaxes = propertyTaxes / 12;
+      const monthlyInsurance = insurance / 12;
+      const totalMonthlyPayment = principalAndInterest + monthlyTaxes + monthlyInsurance;
 
-      document.getElementById('result').innerHTML = `
-        <h3>Estimated Monthly Payment:</h3>
-        <p><strong>${formatter.format(monthlyPayment)}</strong></p>
-        <p>Total Loan: ${formatter.format(loan)} over ${years} years at ${(rate * 12).toFixed(2)}% interest.</p>
+      const resultHTML = `
+        <h3>Estimated Monthly Payment</h3>
+        <table>
+          <tr><th>Principal & Interest</th><td>$${principalAndInterest.toFixed(2)}</td></tr>
+          <tr><th>Property Taxes</th><td>$${monthlyTaxes.toFixed(2)}</td></tr>
+          <tr><th>Home Insurance</th><td>$${monthlyInsurance.toFixed(2)}</td></tr>
+          <tr><th><strong>Total Monthly Payment</strong></th><td><strong>$${totalMonthlyPayment.toFixed(2)}</strong></td></tr>
+        </table>
+
+        <p>Based on a loan amount of $${loanAmount.toFixed(2)} over ${loanTerm} years at ${interestRate * 100}% interest.</p>
       `;
+
+      document.getElementById('result').innerHTML = resultHTML;
     }
   </script>
+
+  <footer>
+    <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+  </footer>
+
 </body>
 </html>
