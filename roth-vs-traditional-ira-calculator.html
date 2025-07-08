@@ -1,108 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Roth vs Traditional IRA Calculator | Compare Retirement Account Tax Benefits</title>
-  
-  <meta name="description" content="Compare Roth IRA and Traditional IRA contributions to see which retirement plan saves you more in taxes based on your income and filing status.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Roth vs Traditional IRA Calculator | DIY Money Tools</title>
+
+  <meta name="description" content="Compare Roth vs Traditional IRA contributions to see which helps you save more after taxes. Calculate tax savings, future balance, and retirement withdrawals.">
+
+  <link rel="canonical" href="https://www.diymoneytools.com/roth-vs-traditional-ira-calculator.html">
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
-      background-color: #f8f9fa;
-    }
-    h1 {
-      color: #333;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-    }
-    #results {
-      margin-top: 25px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
   </style>
 </head>
 <body>
 
-  <h1>Roth vs Traditional IRA Calculator</h1>
+<h1>Roth vs Traditional IRA Calculator</h1>
 
-<p>Not sure whether to contribute to a Roth or Traditional IRA? This calculator helps you compare both retirement account types side by side. Enter your income and contribution details to estimate which plan may save you more in taxes over time.</p>
+<p>Not sure whether to contribute to a Roth or Traditional IRA? Use our <a href="/roth-vs-traditional-ira-calculator.html">Roth vs Traditional IRA Calculator</a> to estimate how much you’ll keep after taxes in retirement. If you want to project your savings growth, try our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
 
-<p>Explore how your money can grow in both accounts with our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
+<p>Learn more about IRA contribution limits and tax rules from the <a href="https://www.irs.gov/retirement-plans/individual-retirement-arrangements-iras" target="_blank" rel="noopener">IRS website</a>.</p>
 
-<p>Learn more about IRA contribution limits and tax rules on the <a href="https://www.irs.gov/retirement-plans/individual-retirement-arrangements-iras" target="_blank" rel="noopener">IRS website</a>.</p>
+<h2>Enter Your Details</h2>
 
-  <label for="income">Annual Income ($):</label>
-  <input type="number" id="income" placeholder="e.g., 60000" />
+<label>Annual Income ($): <input type="number" id="income" placeholder="e.g., 60000"></label>
+<label>Annual Contribution ($): <input type="number" id="contribution" placeholder="e.g., 6500"></label>
+<label>Years Until Retirement: <input type="number" id="years" placeholder="e.g., 30"></label>
+<label>Expected Annual Growth Rate (%): <input type="number" id="growthRate" placeholder="e.g., 7"></label>
+<label>Current Tax Rate (%): <input type="number" id="currentTax" placeholder="e.g., 22"></label>
+<label>Retirement Tax Rate (%): <input type="number" id="retirementTax" placeholder="e.g., 15"></label>
 
-  <label for="contribution">Annual Contribution ($):</label>
-  <input type="number" id="contribution" placeholder="e.g., 6000" />
+<button onclick="calculate()">Compare</button>
 
-  <label for="years">Years Until Retirement:</label>
-  <input type="number" id="years" placeholder="e.g., 30" />
+<div class="result" id="results"></div>
 
-  <label for="growthRate">Expected Annual Growth Rate (%):</label>
-  <input type="number" id="growthRate" placeholder="e.g., 7" />
+<script>
+function calculate() {
+  const contribution = parseFloat(document.getElementById('contribution').value) || 0;
+  const years = parseFloat(document.getElementById('years').value) || 0;
+  const growthRate = parseFloat(document.getElementById('growthRate').value) / 100 || 0;
+  const currentTax = parseFloat(document.getElementById('currentTax').value) / 100 || 0;
+  const retirementTax = parseFloat(document.getElementById('retirementTax').value) / 100 || 0;
 
-  <label for="currentTax">Current Tax Rate (%):</label>
-  <input type="number" id="currentTax" placeholder="e.g., 22" />
+  const rothContrib = contribution * (1 - currentTax);
+  const rothFuture = rothContrib * Math.pow(1 + growthRate, years);
 
-  <label for="retirementTax">Tax Rate at Retirement (%):</label>
-  <input type="number" id="retirementTax" placeholder="e.g., 15" />
+  const traditionalFuture = contribution * Math.pow(1 + growthRate, years);
+  const traditionalAfterTax = traditionalFuture * (1 - retirementTax);
 
-  <button onclick="calculate()">Compare</button>
+  const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
-  <div id="results"></div>
+  document.getElementById('results').innerHTML = `
+    <h3>Results</h3>
+    <table>
+      <tr><th>Roth IRA Final Balance</th><td>${formatter.format(rothFuture)}</td></tr>
+      <tr><th>Traditional IRA Final Balance</th><td>${formatter.format(traditionalFuture)}</td></tr>
+      <tr><th>Traditional IRA After-Tax Balance</th><td>${formatter.format(traditionalAfterTax)}</td></tr>
+    </table>
+    <p>This assumes you invest your full contribution for ${years} years, with consistent returns of ${(growthRate * 100).toFixed(1)}% annually.</p>
+  `;
+}
+</script>
 
-  <script>
-    function calculate() {
-      const income = parseFloat(document.getElementById('income').value);
-      const contribution = parseFloat(document.getElementById('contribution').value);
-      const years = parseFloat(document.getElementById('years').value);
-      const growthRate = parseFloat(document.getElementById('growthRate').value) / 100;
-      const currentTax = parseFloat(document.getElementById('currentTax').value) / 100;
-      const retirementTax = parseFloat(document.getElementById('retirementTax').value) / 100;
-
-      const futureValue = contribution * (((1 + growthRate) ** years - 1) / growthRate);
-
-      const rothAmount = futureValue;
-      const traditionalAmount = futureValue * (1 - retirementTax);
-      const rothAfterTax = contribution * (1 - currentTax);
-      const rothFV = rothAfterTax * (((1 + growthRate) ** years - 1) / growthRate);
-
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      });
-
-      document.getElementById('results').innerHTML = `
-        <h3>Results</h3>
-        <p><strong>Roth IRA (after-tax contributions):</strong> ${formatter.format(rothFV)}</p>
-        <p><strong>Traditional IRA (tax-deferred):</strong> ${formatter.format(traditionalAmount)}</p>
-        <p style="margin-top:10px; font-style:italic;">This assumes you contribute the same dollar amount to both plans and invest consistently over time.</p>
-      `;
-    }
-  </script>
+<footer>
+  <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+</footer>
 
 </body>
 </html>
