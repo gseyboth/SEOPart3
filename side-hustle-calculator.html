@@ -1,40 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Side Hustle Profit Calculator | Estimate Net Income After Expenses & Taxes</title>
-<meta name="description" content="Quickly estimate your side hustle profit after expenses and taxes. Perfect for freelancers, gig workers, and side business owners.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Side Hustle Profit Calculator | DIY Money Tools</title>
+
+  <meta name="description" content="Estimate your side hustle profit by calculating total revenue, expenses, and taxes. Perfect for freelancers, gig workers, and part-time entrepreneurs.">
+
+  <link rel="canonical" href="https://www.diymoneytools.com/side-hustle-calculator.html" />
+
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
-  <h1>Side Hustle Profit Calculator</h1>
 
-  <form>
-    <label>Gross Income ($): <input type="number" id="grossIncome"></label><br><br>
-    <label>Total Expenses ($): <input type="number" id="expenses"></label><br><br>
-    <label>Estimated Tax Rate (%): <input type="number" id="taxRate" value="15"></label><br><br>
-    <button type="button" onclick="calculateProfit()">Calculate</button>
-  </form>
+<h1>Side Hustle Profit Calculator</h1>
 
-  <h2>Results:</h2>
-  <div id="results"></div>
+<p>Running a side hustle? Use our <a href="/side-hustle-calculator.html">Side Hustle Profit Calculator</a> to estimate your take-home profit after expenses and taxes. If you want to estimate your tax payments more accurately, try our <a href="/contractor-tax-estimator.html">Contractor Tax Estimator</a>.</p>
 
-  <script>
-    function calculateProfit() {
-      const gross = parseFloat(document.getElementById('grossIncome').value) || 0;
-      const expenses = parseFloat(document.getElementById('expenses').value) || 0;
-      const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+<h2>Enter Your Earnings & Expenses</h2>
 
-      const net = gross - expenses;
-      const taxes = net * (taxRate / 100);
-      const finalProfit = net - taxes;
+<label>Total Revenue ($): <input type="number" id="revenue" placeholder="e.g., 15000"></label>
+<label>Total Expenses ($): <input type="number" id="expenses" placeholder="e.g., 4000"></label>
+<label>Estimated Tax Rate (%): <input type="number" id="taxRate" placeholder="e.g., 15"></label>
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Net Income (before tax):</strong> $${net.toFixed(2)}</p>
-        <p><strong>Estimated Taxes:</strong> $${taxes.toFixed(2)}</p>
-        <p><strong>Final Profit:</strong> $${finalProfit.toFixed(2)}</p>
-      `;
-    }
-  </script>
+<button onclick="calculateProfit()">Calculate Profit</button>
+
+<div class="result" id="result"></div>
+
+<script>
+function calculateProfit() {
+  const revenue = parseFloat(document.getElementById('revenue').value) || 0;
+  const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+  const taxRate = parseFloat(document.getElementById('taxRate').value) / 100 || 0;
+
+  const netBeforeTax = revenue - expenses;
+  const estimatedTaxes = netBeforeTax * taxRate;
+  const takeHomeProfit = netBeforeTax - estimatedTaxes;
+
+  const resultHTML = `
+    <h3>Profit Summary</h3>
+    <table>
+      <tr><th>Total Revenue</th><td>$${revenue.toFixed(2)}</td></tr>
+      <tr><th>Total Expenses</th><td>$${expenses.toFixed(2)}</td></tr>
+      <tr><th>Net Profit Before Tax</th><td>$${netBeforeTax.toFixed(2)}</td></tr>
+      <tr><th>Estimated Taxes</th><td>$${estimatedTaxes.toFixed(2)}</td></tr>
+      <tr><th><strong>Take-Home Profit</strong></th><td><strong>$${takeHomeProfit.toFixed(2)}</strong></td></tr>
+    </table>
+  `;
+
+  document.getElementById('result').innerHTML = resultHTML;
+}
+</script>
+
+<footer>
+  <p>&copy; 2025 DIY Money Tools. <a href="/">Back to Home</a></p>
+</footer>
+
 </body>
 </html>
