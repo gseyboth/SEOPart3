@@ -1,70 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Debt Snowball Calculator | Pay Off Debt Faster with the Snowball Method</title>
   
   <meta name="description" content="Use our free Debt Snowball Calculator to create your personalized debt payoff plan. List your debts, choose your payoff strategy, and track your progress toward becoming debt-free.">
 
-  <meta name="keywords" content="Debt Snowball Calculator, Pay Off Debt, Snowball Method, Debt Payoff Plan, Personal Finance Tools, Financial Freedom, Credit Card Payoff">
-
-  <link rel="canonical" href="https://diymoneytools.com/debt-snowball-calculator.html">
+  <link rel="canonical" href="https://www.diymoneytools.com/debt-snowball-calculator.html">
+  
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; }
+    h1 { color: #2c3e50; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 6px; width: 100%; max-width: 400px; }
+    button { margin-top: 15px; padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    pre { overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
 
   <h1>Debt Snowball Calculator</h1>
 
-<p>Pay off your debt faster with the snowball method. This calculator helps you prioritize smaller debts first, building momentum and freeing up cash flow as you go. List your debts, choose your payment strategy, and start your path to being debt-free.</p>
+  <p>Pay off your debt faster with the snowball method. This calculator helps you prioritize smaller debts first, build momentum, and track your progress to becoming debt-free.</p>
 
-<p>Looking to grow your savings too? Estimate your future balance with our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
+  <p>Looking to grow your savings too? Estimate your future balance with our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
 
-<p>Learn more about debt payoff strategies like the snowball and avalanche methods in this <a href="https://www.nerdwallet.com/article/finance/debt-snowball-vs-debt-avalanche" target="_blank" rel="noopener">NerdWallet guide</a>.</p>
-  
-  <form>
-    <label>Debt 1 Amount ($): <input type="number" id="debt1"></label><br><br>
-    <label>Debt 2 Amount ($): <input type="number" id="debt2"></label><br><br>
-    <label>Debt 3 Amount ($): <input type="number" id="debt3"></label><br><br>
-    <label>Debt 4 Amount ($): <input type="number" id="debt4"></label><br><br>
-    <label>Monthly Payment ($): <input type="number" id="monthlyPayment"></label><br><br>
-    <button type="button" onclick="calculateSnowball()">Calculate</button>
+  <p>Learn more about debt payoff strategies like the snowball and avalanche methods in this <a href="https://www.nerdwallet.com/article/finance/debt-snowball-vs-debt-avalanche" target="_blank" rel="noopener">NerdWallet guide</a>.</p>
+
+  <h2>Enter Your Debts</h2>
+
+  <form onsubmit="return false;">
+    <label>Debt 1 Balance ($): <input type="number" id="balance1"></label>
+    <label>Debt 1 Interest Rate (%): <input type="number" id="rate1"></label>
+    <label>Debt 1 Minimum Payment ($): <input type="number" id="payment1"></label>
+
+    <label>Debt 2 Balance ($): <input type="number" id="balance2"></label>
+    <label>Debt 2 Interest Rate (%): <input type="number" id="rate2"></label>
+    <label>Debt 2 Minimum Payment ($): <input type="number" id="payment2"></label>
+
+    <label>Debt 3 Balance ($): <input type="number" id="balance3"></label>
+    <label>Debt 3 Interest Rate (%): <input type="number" id="rate3"></label>
+    <label>Debt 3 Minimum Payment ($): <input type="number" id="payment3"></label>
+
+    <label>Debt 4 Balance ($): <input type="number" id="balance4"></label>
+    <label>Debt 4 Interest Rate (%): <input type="number" id="rate4"></label>
+    <label>Debt 4 Minimum Payment ($): <input type="number" id="payment4"></label>
+
+    <label>Extra Monthly Payment ($): <input type="number" id="extraPayment"></label>
+
+    <button onclick="calculateSnowball()">Calculate</button>
   </form>
 
   <h2>Results:</h2>
-  <div id="results"></div>
+  <div class="result" id="results"></div>
 
   <script>
     function calculateSnowball() {
       const debts = [
-        parseFloat(document.getElementById('debt1').value) || 0,
-        parseFloat(document.getElementById('debt2').value) || 0,
-        parseFloat(document.getElementById('debt3').value) || 0,
-        parseFloat(document.getElementById('debt4').value) || 0,
-      ].sort((a, b) => a - b); // sort debts from smallest to largest
+        { balance: parseFloat(document.getElementById('balance1').value) || 0, rate: parseFloat(document.getElementById('rate1').value) / 100 || 0, payment: parseFloat(document.getElementById('payment1').value) || 0 },
+        { balance: parseFloat(document.getElementById('balance2').value) || 0, rate: parseFloat(document.getElementById('rate2').value) / 100 || 0, payment: parseFloat(document.getElementById('payment2').value) || 0 },
+        { balance: parseFloat(document.getElementById('balance3').value) || 0, rate: parseFloat(document.getElementById('rate3').value) / 100 || 0, payment: parseFloat(document.getElementById('payment3').value) || 0 },
+        { balance: parseFloat(document.getElementById('balance4').value) || 0, rate: parseFloat(document.getElementById('rate4').value) / 100 || 0, payment: parseFloat(document.getElementById('payment4').value) || 0 }
+      ].filter(d => d.balance > 0);
 
-      const monthlyPayment = parseFloat(document.getElementById('monthlyPayment').value) || 0;
-      let months = 0;
-      let totalPaid = 0;
+      const extraPayment = parseFloat(document.getElementById('extraPayment').value) || 0;
 
-      while (debts.some(d => d > 0)) {
-        months++;
-        let payment = monthlyPayment;
+      debts.sort((a, b) => a.balance - b.balance); // Snowball: smallest balance first
 
-        for (let i = 0; i < debts.length; i++) {
-          if (debts[i] > 0 && payment > 0) {
-            const paymentAmount = Math.min(debts[i], payment);
-            debts[i] -= paymentAmount;
-            payment -= paymentAmount;
-            totalPaid += paymentAmount;
+      let month = 0;
+      let totalInterest = 0;
+      const log = [];
+
+      while (debts.some(d => d.balance > 0) && month < 600) {
+        month++;
+        let availablePayment = extraPayment;
+
+        for (let debt of debts) {
+          if (debt.balance <= 0) continue;
+
+          const interest = debt.balance * debt.rate / 12;
+          totalInterest += interest;
+          debt.balance += interest;
+
+          let payment = debt.payment + availablePayment;
+          debt.balance -= payment;
+
+          if (debt.balance < 0) debt.balance = 0;
+
+          if (debt.balance === 0) {
+            availablePayment += debt.payment; // roll minimum payment into extra
+          } else {
+            break; // apply extra payment to one debt at a time
           }
         }
+
+        const totalRemaining = debts.reduce((sum, d) => sum + d.balance, 0);
+        log.push(`Month ${month}: Remaining Debt: $${totalRemaining.toFixed(2)}`);
       }
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Estimated Total Paid:</strong> $${totalPaid.toFixed(2)}</p>
-        <p><strong>Estimated Months to Pay Off:</strong> ${months}</p>
+      const summary = `
+        <p><strong>Total Months to Pay Off:</strong> ${month}</p>
+        <p><strong>Estimated Years:</strong> ${(month / 12).toFixed(1)}</p>
+        <p><strong>Total Interest Paid:</strong> $${totalInterest.toFixed(2)}</p>
       `;
+
+      document.getElementById('results').innerHTML = summary + "<pre>" + log.join("\n") + "</pre>";
     }
   </script>
 
