@@ -1,55 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Hourly to Salary Calculator | Convert Hourly Pay to Annual Salary</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <meta name="description" content="Convert your hourly wage into an annual salary in seconds. Perfect for freelancers, hourly workers, and anyone comparing job offers.">
+  <title>Hourly to Salary Calculator | DIY Money Tools</title>
   
-  <meta name="keywords" content="Hourly to Salary Calculator, Convert Hourly Wage, Hourly Pay to Annual Salary, Salary Converter, Freelance Pay Calculator">
+  <meta name="description" content="Convert your hourly wage to an annual salary with our hourly to salary calculator. Adjust for hours worked per week, paid time off, and overtime.">
+  
+  <link rel="canonical" href="https://www.diymoneytools.com/hourly-to-salary-calculator.html" />
 
-  <link rel="canonical" href="https://diymoneytools.com/hourly-to-salary-calculator.html">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; }
+    h1 { color: #2c3e50; }
+    input { margin-bottom: 10px; padding: 5px; width: 100%; max-width: 400px; }
+    button { padding: 10px 15px; }
+    .result { margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 8px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; color: #777; }
+  </style>
 </head>
 <body>
 
   <h1>Hourly to Salary Calculator</h1>
 
-<p>Quickly convert your hourly wage into an annual salary. Whether you're negotiating a new job offer or estimating freelance income, this tool helps you understand your yearly earnings based on your hours worked.</p>
+  <p>Use our <a href="/hourly-to-salary-calculator.html">Hourly to Salary Calculator</a> to estimate your annual income based on your hourly wage, hours worked per week, and paid time off. If you’re also calculating your tax obligations, try our <a href="/contractor-tax-estimator.html">Contractor Tax Estimator</a>.</p>
 
-<p>Need to plan your savings goals? Try our <a href="/savings-goal-calculator">Savings Goal Calculator</a>.</p>
+  <h2>Enter Your Pay Details</h2>
 
-  <p>For industry wage data and national averages, visit the <a href="https://www.bls.gov/oes/current/oes_nat.htm" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics Occupational Wage Estimates</a>.</p>
-  
-  <form>
-    <label>Hourly Rate ($): <input type="number" id="hourlyRate"></label><br><br>
-    <label>Hours Worked Per Week: <input type="number" id="hoursPerWeek" value="40"></label><br><br>
-    <label>Weeks Worked Per Year: <input type="number" id="weeksPerYear" value="52"></label><br><br>
-    <button type="button" onclick="calculateSalary()">Calculate</button>
-  </form>
+  <label>Hourly Wage ($):
+    <input type="number" id="hourlyWage" placeholder="e.g., 25">
+  </label>
 
-  <h2>Results:</h2>
-  <div id="results"></div>
+  <label>Hours Worked Per Week:
+    <input type="number" id="hoursPerWeek" placeholder="e.g., 40">
+  </label>
+
+  <label>Paid Weeks Off Per Year:
+    <input type="number" id="weeksOff" placeholder="e.g., 2">
+  </label>
+
+  <button onclick="calculateSalary()">Calculate Salary</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     function calculateSalary() {
-      const hourlyRate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+      const hourlyWage = parseFloat(document.getElementById('hourlyWage').value) || 0;
       const hoursPerWeek = parseFloat(document.getElementById('hoursPerWeek').value) || 0;
-      const weeksPerYear = parseFloat(document.getElementById('weeksPerYear').value) || 0;
+      const weeksOff = parseFloat(document.getElementById('weeksOff').value) || 0;
 
-      const annualSalary = hourlyRate * hoursPerWeek * weeksPerYear;
+      const paidWeeks = 52;
+      const workedWeeks = paidWeeks - weeksOff;
+      const annualSalary = hourlyWage * hoursPerWeek * workedWeeks;
+      const monthlySalary = annualSalary / 12;
+      const weeklyPay = hourlyWage * hoursPerWeek;
 
-      const formatted = annualSalary.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
+      const resultHTML = `
+        <h3>Estimated Salary</h3>
+        <table>
+          <tr><th>Annual Salary</th><td>$${annualSalary.toFixed(2)}</td></tr>
+          <tr><th>Monthly Pay</th><td>$${monthlySalary.toFixed(2)}</td></tr>
+          <tr><th>Weekly Pay</th><td>$${weeklyPay.toFixed(2)}</td></tr>
+        </table>
 
-      document.getElementById('results').innerHTML = `
-        <p><strong>Estimated Annual Salary:</strong> ${formatted}</p>
+        <p>This calculation assumes you work ${workedWeeks} weeks per year after ${weeksOff} paid weeks off.</p>
       `;
+
+      document.getElementById('result').innerHTML = resultHTML;
     }
   </script>
 
