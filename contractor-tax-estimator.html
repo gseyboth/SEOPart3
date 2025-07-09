@@ -25,7 +25,9 @@
 
   <h1>Contractor Tax Estimator</h1>
 
-  <p>Contractors and freelancers often face unpredictable tax bills. Use our <a href="/contractor-tax-estimator.html">Contractor Tax Estimator</a> to calculate your federal, self-employment, and state taxes. Want to see how your savings could grow over time? Try our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
+  <p>Self-employed workers and freelancers face unique tax situations. Use our free Contractor Tax Estimator to quickly calculate your federal, self-employment, and state taxes. This tool even includes optional California health penalties and LLC franchise taxes. Want to see how your savings could grow after taxes? Try our <a href="/compound-interest-calculator.html">Compound Interest Calculator</a>.</p>
+
+  <h2>Enter Your Income Details</h2>
 
   <label>Annual Gross Income ($):
     <input type="number" id="income" value="100000" />
@@ -64,6 +66,10 @@
   <button onclick="calculateTaxes()">Calculate Taxes</button>
 
   <div class="result" id="output"></div>
+
+  <p style="font-size: 0.9rem; color: #666; margin-top: 1rem;">
+    Curious how self-employment taxes work? Check out the <a href="https://www.irs.gov/businesses/small-businesses-self-employed/self-employment-tax-social-security-and-medicare-taxes" target="_blank" rel="noopener noreferrer">IRS guide to self-employment taxes</a>.
+  </p>
 
   <footer>
     © 2025 DIY Money Tools. For estimation use only. Calculations may not reflect exact tax liabilities.
@@ -129,5 +135,6 @@
       document.getElementById('output').innerHTML = output;
     }
   </script>
+
 </body>
 </html>
