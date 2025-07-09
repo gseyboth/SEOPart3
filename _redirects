@@ -1,11 +1,12 @@
-/side-hustle  /side-hustle-calculator.html  301
-/car-loan     /car-loan-calculator.html    301
-/rent-buy     /rent-vs-buy-calculator.html 301
+# Short links → calculators
+/side-hustle     /side-hustle-calculator      301
+/car-loan        /car-loan-calculator         301
+/rent-buy        /rent-vs-buy-calculator      301
 
 # Future-friendly tool redirects (optional)
-/tools/side-hustle-profit  /side-hustle-calculator.html  301
-/tools/car-loan-payment    /car-loan-calculator.html    301
-/tools/rent-vs-buy         /rent-vs-buy-calculator.html 301
+/tools/side-hustle-profit  /side-hustle-calculator      301
+/tools/car-loan-payment    /car-loan-calculator         301
+/tools/rent-vs-buy         /rent-vs-buy-calculator      301
 
-# Catch-all: redirect unmatched URLs to home page with a 404 status
-/*  /index.html  404
+# Catch-all: redirect unmatched URLs to your 404 page (remove this if no 404.html)
+/*  /404.html  404
