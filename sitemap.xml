@@ -2,48 +2,36 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Core Pages -->
-  <url>
-    <loc>https://www.diymoneytools.com/</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/privacy.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/about.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/contact.html</loc>
-  </url>
+  <url><loc>https://www.diymoneytools.com/index.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/privacy.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/about.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/contact.html</loc></url>
 
   <!-- Top-Traffic Calculators -->
-  <url>
-    <loc>https://www.diymoneytools.com/roth-vs-traditional-ira-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/debt-snowball-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/compound-interest-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/hourly-to-salary-calculator.html</loc>
-  </url>
+  <url><loc>https://www.diymoneytools.com/roth-vs-traditional-ira-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/debt-snowball-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/compound-interest-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/hourly-to-salary-calculator.html</loc></url>
 
   <!-- Secondary Calculators -->
-  <url>
-    <loc>https://www.diymoneytools.com/budget-planner-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/car-loan-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/tip-calculator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/contractor-tax-estimator.html</loc>
-  </url>
-  <url>
-    <loc>https://www.diymoneytools.com/self-employed-tax-calendar.html</loc>
-  </url>
+  <url><loc>https://www.diymoneytools.com/budget-planner-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/car-loan-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/mortgage-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/savings-goal-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/tip-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/contractor-tax-estimator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/self-employed-tax-calendar.html</loc></url>
+
+  <!-- Blog Posts -->
+  <url><loc>https://www.diymoneytools.com/blog-hourly-to-salary.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-budget-planner.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-savings-goal.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-compound-interest.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-mortgage-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-contractor-tax.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-self-employed-tax-calendar.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-tip-calculator.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-roth-vs-traditional.html</loc></url>
+  <url><loc>https://www.diymoneytools.com/blog-debt-snowball-vs-avalanche.html</loc></url>
 
 </urlset>
