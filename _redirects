@@ -8,5 +8,17 @@
 /tools/car-loan-payment    /car-loan-calculator         301
 /tools/rent-vs-buy         /rent-vs-buy-calculator      301
 
-# Catch-all: redirect unmatched URLs to your 404 page (remove this if no 404.html)
+# Redirect old calculator URLs → canonical .html versions
+/debt-snowball-calculator             /debt-snowball-calculator.html             301
+/budget-planner-calculator            /budget-planner-calculator.html            301
+/hourly-to-salary-calculator          /hourly-to-salary-calculator.html          301
+/savings-goal-calculator              /savings-goal-calculator.html              301
+/compound-interest-calculator         /compound-interest-calculator.html         301
+/mortgage-calculator                  /mortgage-calculator.html                  301
+/contractor-tax-estimator             /contractor-tax-estimator.html             301
+/self-employed-tax-calendar           /self-employed-tax-calendar.html           301
+/tip-calculator                       /tip-calculator.html                       301
+/roth-vs-traditional-ira-calculator   /roth-vs-traditional-ira-calculator.html   301
+
+# Catch-all: redirect unmatched URLs to your 404 page
 /*  /404.html  404
